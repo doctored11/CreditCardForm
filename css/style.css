@@ -1,0 +1,174 @@
+* {
+  box-sizing: border-box;
+  border: 1px solid rgba(245, 130, 59, 0.803);
+}
+:root {
+  --main-black: #000;
+  --main-lite-green: #5bc0529e;
+  --main-dark-green: #3a9239c4;
+  --lite-color: #ebebeb;
+  --text-black: #333;
+}
+/*  */
+.frame {
+  padding: 0 10%;
+  padding-top: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-zone {
+  padding: 5% 3%;
+  max-width: 700px;
+  max-height: 400px;
+  width: 80%;
+}
+.card {
+  position: relative;
+  
+  transition: transform 0.55s cubic-bezier(0, 1.65, 0.255, 1.035);
+}
+
+.card--open {
+  transform: perspective(600px) rotateY(180deg);
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}
+.front,
+.back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  transition: transform 0.55s cubic-bezier(0, 1.65, 0.255, 1.035);
+  backface-visibility: hidden;
+
+  z-index: 1;
+}
+.active-background {
+  padding: 30px 50px;
+  height: 100% !important;
+  width: 100%;
+  border-radius: 15px;
+}
+.active-background--true {
+  background-color: var(--main-color);
+  background: linear-gradient(
+    -48deg,
+    var(--main-dark-green),
+    var(--main-lite-green)
+  );
+  transition: all 0.4s ease;
+}
+.back {
+  /* transform: perspective(600px) rotateY(0deg); */
+  background: transparent;
+  backface-visibility: hidden;
+}
+.front {
+  z-index: 2;
+  display: grid;
+  /* grid-template-rows: auto auto;  */
+  grid-gap: 10px;
+
+  min-height: 180px;
+  min-width: 240px;
+  height: 100%;
+  width: 100%;
+  background: transparent;
+
+  transform: perspective(600px) rotateY(180deg) translateY(0px);
+
+  position: relative;
+}
+
+.card--open .back {
+  /* transform: perspective(600px) rotateY(-180deg); */
+
+  transform: perspective(600px) rotateY(-180deg) translateY(0px);
+}
+.card.card--open {
+  transition: transform 0.55s cubic-bezier(0, 1.65, 0.255, 1.035);
+}
+
+.card--open .front {
+  /* transform: perspective(600px) rotateY(0deg) translateY(0); */
+  /* animation: slideClose 3s cubic-bezier(0, 1.65, 0.255, 1.035) 1; */
+  transform: perspective(600px) rotateY(0deg) translateY(0px);
+}
+
+.card.return {
+  transition: transform 0.5s ease;
+}
+.card form {
+  display: grid;
+  grid-gap: 10px; /* Расстояние между элементами */
+}
+
+.card__input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid var(--lite-color);
+  font-size: 14px;
+  line-height: 1.43;
+  border-radius: 12px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.12px;
+  padding: 16px;
+}
+
+.card__input[type="text"] {
+  width: 100%;
+}
+
+@media screen and (min-width: 500px) {
+  .card form {
+    grid-template-columns: 4fr 1fr; /* Две колонки */
+    grid-template-rows: auto; /* Одна строка */
+  }
+
+  #card-number {
+    grid-column: 1 / span 2; /* Занимает две колонки */
+  }
+}
+
+.chip {
+  background: linear-gradient(
+    300deg,
+    #ff0c0c,
+    #f4f01e,
+    #22fc01,
+    #11c3c6,
+    #3306c6,
+    #f30bdf
+  );
+  background-size: 1000% 1000%;
+
+  animation: Logo 6s ease infinite;
+  display: block;
+  width: 5em;
+  height: 4em;
+  z-index: 5;
+  border-radius: 15px;
+}
+
+@keyframes Logo {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+

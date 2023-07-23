@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <div class="frame">
+      <div class="card-zone" id="card-zone">
+        <div class="card card--open" id="card">
+          <div class="card__front front" id="front">
+            <div class="front__active-background active-background active-background--true ">
+            <div class="card__head">
+              <div class="card__logo logo"></div>
+              <h3 class="card__bank-name"></h3>
+              <div class="card__system system">
+                <div class="system__chip chip"></div>
+                <div class="system__logo logo"></div>
+              </div>
+            </div>
+            <form class="card__form">
+              <input
+                class="card__input input"
+                type="text"
+                id="card-number"
+                placeholder="Номер карты"
+                required
+              />
+              <input
+                class="card__input input"
+                type="text"
+                id="card-holder"
+                placeholder="Владелец карты"
+                required
+              />
+              <input
+                class="card__input input"
+                type="text"
+                id="expiration-date"
+                placeholder="MM/ГГ"
+                required
+              />
+              <!-- <input class="card__input input" type="text" id="cvv" placeholder="123" required /> -->
+            </form>
+          </div>
+        </div>
+
+          <div class="card__back back" id="back">
+            <div class="back__active-background active-background">
+            <div class="h3">Матута</div>
+        </div>
+          </div>
+        </div>
+        <button type="submit">Оплатить</button>
+      </div>
+    </div>
+
+    <script src="./scripts/script.js"></script>
+  </body>
+</html>
