@@ -65,7 +65,7 @@
   transition: all 0.4s ease;
 }
 .back {
-  /* transform: perspective(600px) rotateY(0deg); */
+  
   background: transparent;
   backface-visibility: hidden;
 }
