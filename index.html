@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
@@ -11,52 +17,90 @@
       <div class="card-zone" id="card-zone">
         <div class="card card--open" id="card">
           <div class="card__front front" id="front">
-            <div class="front__active-background active-background active-background--true ">
-            <div class="card__head">
-              <div class="card__logo logo"></div>
-              <h3 class="card__bank-name"></h3>
-              <div class="card__system system">
-                <div class="system__chip chip"></div>
-                <div class="system__logo logo"></div>
+            <div
+              class="front__active-background active-background active-background--true"
+            >
+              <div class="card__head">
+                <div class="card__logo logo"></div>
+                <h3 class="card__bank-name"></h3>
+                <div class="card__system system">
+                  <div class="system__main-part">
+                    <div class="system__chip chip"></div>
+                    <img
+                      src="./src/icons8-nfc-96.png"
+                      alt=""
+                      class="systen__nfc"
+                    />
+                  </div>
+                  <div class="system__logo logo"></div>
+                </div>
               </div>
+              <form class="card__form">
+                <div class="front__input-box" id="card-number--box">
+                  <span class="front__error" id="card-number-error"
+                    >проверьте номер карты</span
+                  >
+                  <input
+                    class="card__input input"
+                    type="text"
+                    id="card-number"
+                    placeholder="Номер карты"
+                    required
+                  />
+                </div>
+                <div class="front__input-box">
+                  <input
+                    class="card__input input"
+                    type="text"
+                    id="card-holder"
+                    placeholder="Владелец карты"
+                    required
+                  />
+                  <span class="front__error" id="card-holder-error"
+                    >проверьте имя</span
+                  >
+                </div>
+                <div class="front__input-box">
+                  <input
+                    class="card__input input"
+                    type="text"
+                    id="expiration-date"
+                    placeholder="MM/ГГ"
+                    required
+                  />
+
+                  <span class="front__error" id="expiration-date-error"
+                    >проверьте дату</span
+                  >
+                </div>
+
+                <!-- <input class="card__input input" type="text" id="cvv" placeholder="123" required /> -->
+              </form>
             </div>
-            <form class="card__form">
-              <input
-                class="card__input input"
-                type="text"
-                id="card-number"
-                placeholder="Номер карты"
-                required
-              />
-              <input
-                class="card__input input"
-                type="text"
-                id="card-holder"
-                placeholder="Владелец карты"
-                required
-              />
-              <input
-                class="card__input input"
-                type="text"
-                id="expiration-date"
-                placeholder="MM/ГГ"
-                required
-              />
-              <!-- <input class="card__input input" type="text" id="cvv" placeholder="123" required /> -->
-            </form>
           </div>
-        </div>
 
           <div class="card__back back" id="back">
             <div class="back__active-background active-background">
-            <div class="h3">Матута</div>
-        </div>
+              <div class="back__input-box">
+                <div class="back__magnetic-stripe"></div>
+                <input
+                  class="card__input input"
+                  type="text"
+                  id="CVV"
+                  placeholder="CVC/CVV"
+                  required
+                />
+                <span class="back__error" id="cvv-error"
+                    >проверьте код</span
+                  >
+              </div>
+            </div>
           </div>
         </div>
         <button type="submit">Оплатить</button>
       </div>
     </div>
 
-    <script src="./scripts/script.js"></script>
+    <script src="./scripts/script.js" type="module"></script>
   </body>
 </html>
