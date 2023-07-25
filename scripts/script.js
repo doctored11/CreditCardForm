@@ -7,6 +7,8 @@ import {
 } from "creditcard.js";
 import { el, mount } from "redom";
 
+//поиск по DOM
+
 const card = document.getElementById("card");
 const cardZone = document.getElementById("card-zone");
 
@@ -14,15 +16,18 @@ const buyBtn = document.getElementById("buy-btn");
 
 const arrOfSides = document.querySelectorAll(".active-background");
 let activeSide;
+
+let cardNum = document.getElementById("card-number");
 const rootDarkGreen = "#396092c4";
 const rootLightGreen = "#5290c09e";
+
+
+// слушатели
 card.addEventListener("mousemove", (e) => {
   activeSide = document.querySelector(".active-background--true");
   transformationOfCard(card, e, 5);
 });
-card.addEventListener("click", () => {
-  // flip()
-});
+
 cardZone.addEventListener("mousemove", (e) => {
   activeSide = document.querySelector(".active-background--true");
   transformationOfCard(cardZone, e, 15);
@@ -41,32 +46,11 @@ cardZone.addEventListener("mouseenter", () => {
   card.classList.remove("return");
 });
 
-function transformationOfCard(objClass, event, resistanceForce) {
-  event.stopPropagation();
-  if (isbutterflyOpen) resistanceForce *= 3;
-  // console.log(isbutterflyOpen);
 
-  const rect = objClass.getBoundingClientRect();
-  const cardCenterX = rect.left + rect.width / 2;
-  const cardCenterY = rect.top + rect.height / 2;
-  const mouseX = event.clientX;
-  const mouseY = event.clientY;
-  const deltaX = mouseX - cardCenterX;
-  const deltaY = mouseY - cardCenterY;
 
-  const gradientAngle = Math.atan2(deltaY, deltaX) * (180 / Math.PI) - 90;
+//функции логики
+//--маска
 
-  if (!isbutterflyOpen)
-    activeSide.style.background = `linear-gradient(${gradientAngle}deg, ${rootDarkGreen},${rootLightGreen})`;
-
-  card.style.transform = `rotateX(${-deltaY / resistanceForce}deg) rotateY(${
-    deltaX / (3 * resistanceForce)
-  }deg)`;
-}
-
-//маска
-
-let cardNum = document.getElementById("card-number");
 let numMask = new Inputmask("9999 9999 9999 9999", {
   placeholder: " ",
   clearMaskOnLostFocus: true,
@@ -121,7 +105,7 @@ cardNum.addEventListener("blur", () => {
   checkAndExecuteFlipBack();
   checkPaymentSys();
   checkAllInputs();
-  // проверяем платежную систему
+
 });
 
 cardNum.addEventListener("input", () => {
@@ -237,6 +221,31 @@ CVVCode.addEventListener("input", () => {
   document.getElementById("CVV").classList.remove("error-input");
   CVVError = false;
 });
+
+
+//функции анимация и прочего
+function transformationOfCard(objClass, event, resistanceForce) {
+  event.stopPropagation();
+  if (isbutterflyOpen) resistanceForce *= 3;
+  // console.log(isbutterflyOpen);
+
+  const rect = objClass.getBoundingClientRect();
+  const cardCenterX = rect.left + rect.width / 2;
+  const cardCenterY = rect.top + rect.height / 2;
+  const mouseX = event.clientX;
+  const mouseY = event.clientY;
+  const deltaX = mouseX - cardCenterX;
+  const deltaY = mouseY - cardCenterY;
+
+  const gradientAngle = Math.atan2(deltaY, deltaX) * (180 / Math.PI) - 90;
+
+  if (!isbutterflyOpen)
+    activeSide.style.background = `linear-gradient(${gradientAngle}deg, ${rootDarkGreen},${rootLightGreen})`;
+
+  card.style.transform = `rotateX(${-deltaY / resistanceForce}deg) rotateY(${
+    deltaX / (3 * resistanceForce)
+  }deg)`;
+}
 
 function checkAndExecuteFlipBack() {
   if (

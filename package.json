@@ -7,7 +7,6 @@
   "dependencies": {
     "creditcard.js": "^3.0.30",
     "inputmask": "^5.0.8",
-    "parcel": "^2.9.3",
-    "redom": "^3.29.1"
+    "parcel": "^2.9.3"
   }
 }
