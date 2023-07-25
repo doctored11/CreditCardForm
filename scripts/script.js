@@ -10,6 +10,8 @@ import { el, mount } from "redom";
 const card = document.getElementById("card");
 const cardZone = document.getElementById("card-zone");
 
+const buyBtn = document.getElementById("buy-btn");
+
 const arrOfSides = document.querySelectorAll(".active-background");
 let activeSide;
 const rootDarkGreen = "#396092c4";
@@ -20,8 +22,6 @@ card.addEventListener("mousemove", (e) => {
 });
 card.addEventListener("click", () => {
   // flip()
-
-
 });
 cardZone.addEventListener("mousemove", (e) => {
   activeSide = document.querySelector(".active-background--true");
@@ -43,6 +43,8 @@ cardZone.addEventListener("mouseenter", () => {
 
 function transformationOfCard(objClass, event, resistanceForce) {
   event.stopPropagation();
+  if (isbutterflyOpen) resistanceForce *= 3;
+  // console.log(isbutterflyOpen);
 
   const rect = objClass.getBoundingClientRect();
   const cardCenterX = rect.left + rect.width / 2;
@@ -54,7 +56,8 @@ function transformationOfCard(objClass, event, resistanceForce) {
 
   const gradientAngle = Math.atan2(deltaY, deltaX) * (180 / Math.PI) - 90;
 
-  activeSide.style.background = `linear-gradient(${gradientAngle}deg, ${rootDarkGreen},${rootLightGreen})`;
+  if (!isbutterflyOpen)
+    activeSide.style.background = `linear-gradient(${gradientAngle}deg, ${rootDarkGreen},${rootLightGreen})`;
 
   card.style.transform = `rotateX(${-deltaY / resistanceForce}deg) rotateY(${
     deltaX / (3 * resistanceForce)
@@ -82,13 +85,29 @@ let cardCode = document.getElementById("CVV");
 let codeMask = new Inputmask("999");
 codeMask.mask(cardCode);
 
+let email = document.getElementById("email");
+console.log(email);
+let emailMask = new Inputmask("email");
+emailMask.mask(email);
+
 let cardNumFocused = false;
 let cardHolderFocused = false;
 let cardDateFocused = false;
+let cardCVV = false;
+let emailFocused = false;
+let isbutterflyOpen = false;
 
 let cardNumError = true;
 let cardHolderError = true;
 let cardDateError = true;
+let CVVError = true;
+let emailError = true;
+
+const allInputs = document.querySelectorAll('input');
+
+allInputs.forEach(inputElement => {
+  inputElement.addEventListener('focus', checkAllInputs);
+});
 
 cardNum.addEventListener("blur", () => {
   cardNumFocused = false;
@@ -101,6 +120,7 @@ cardNum.addEventListener("blur", () => {
   }
   checkAndExecuteFlipBack();
   checkPaymentSys();
+  checkAllInputs();
   // проверяем платежную систему
 });
 
@@ -111,7 +131,48 @@ cardNum.addEventListener("input", () => {
   cardNumError = false;
 });
 
+email.addEventListener("input", () => {
+  emailFocused = true;
+  document.getElementById("email-error").classList.remove("error");
+  document.getElementById("email").classList.remove("error-input");
+  emailError = false;
+});
+email.addEventListener("blur", () => {
+  emailFocused = false;
+  
+  if (email.value.trim() == "") {
+    email.setAttribute("placeholder", "Ваш email");
+    email.textContent = "Для получения чека введите ваш email-адресс";
+    document.getElementById("email-error").classList.remove("error");
+    return;
+  }
+
+  if (!isValidEmail(email.value)) {
+    document.getElementById("email-error").classList.add("error");
+    document.getElementById("email").classList.add("error-input");
+    email.textContent = "Проверьте ваш email-aдресс";
+    emailError = true;
+  } else {
+    email.textContent = "Для получения чека введите ваш email-адресс";
+    emailError = false;
+  }
+  buyBtnSwitch();
+  
+});
+
+function isValidEmail(email) {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailPattern.test(email);
+}
+
+email.addEventListener("focus", function () {
+  // Когда элемент получает фокус, удаляем значение атрибута placeholder
+  this.removeAttribute("placeholder");
+});
+
 cardHolder.addEventListener("blur", () => {
+ 
+  console.log("blur");
   cardHolderFocused = false;
   if (!/^[A-Za-z]+\s[A-Za-z]+$/.test(cardHolder.value)) {
     document.getElementById("card-holder-error").classList.add("error");
@@ -121,13 +182,15 @@ cardHolder.addEventListener("blur", () => {
     cardHolderError = false;
   }
   checkAndExecuteFlipBack();
+  checkAllInputs();
 });
 
 cardHolder.addEventListener("input", () => {
   cardHolderFocused = true;
   document.getElementById("card-holder-error").classList.remove("error");
   document.getElementById("card-holder").classList.remove("error-input");
-  cardHolderError = false;
+  
+  // cardHolderError = false;
 });
 
 cardDate.addEventListener("blur", () => {
@@ -141,6 +204,7 @@ cardDate.addEventListener("blur", () => {
     cardDateError = false;
   }
   checkAndExecuteFlipBack();
+  checkAllInputs();
 });
 
 cardDate.addEventListener("input", () => {
@@ -163,6 +227,7 @@ CVVCode.addEventListener("blur", () => {
   } else {
     CVVError = false;
   }
+  checkAllInputs();
   //
 });
 
@@ -172,8 +237,6 @@ CVVCode.addEventListener("input", () => {
   document.getElementById("CVV").classList.remove("error-input");
   CVVError = false;
 });
-
-
 
 function checkAndExecuteFlipBack() {
   if (
@@ -226,3 +289,49 @@ function checkPaymentSys() {
   }
   console.log(name);
 }
+function checkAllInputs() {
+ 
+  if (
+    !cardNumFocused &&
+    !cardHolderFocused &&
+    !cardDateFocused &&
+    !cardCVV &&
+    cardNumError + cardHolderError + cardDateError + CVVError <= 0
+  ) {
+    // Если все три поля не в фокусе и не содержат ошибок, выполнить функцию FlipBack()
+    
+    
+    butterflyOpen();
+
+    document.querySelector(".contact").classList.add("contact--active");
+  }
+  buyBtnSwitch();
+}
+function butterflyOpen() {
+  if (isbutterflyOpen) return;
+  card.classList.add("card--test");
+  isbutterflyOpen = true;
+}
+
+
+function buyBtnSwitch() {
+  buyBtn.disabled = true;
+  console.log(
+    cardNumError,
+    cardHolderError,
+    cardDateError,
+    CVVError,
+    emailError +
+      " " +
+      (cardNumError + cardHolderError + cardDateError + CVVError + emailError)
+  );
+  if (
+    cardNumError + cardHolderError + cardDateError + CVVError + emailError <=
+    0
+  ) {
+    buyBtn.disabled = false;
+    return;
+  }
+  
+}
+buyBtn.addEventListener('click',()=>{alert('Все ушли денюжки')})

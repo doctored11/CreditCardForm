@@ -2,33 +2,66 @@
   box-sizing: border-box;
   /* border: 1px solid rgba(245, 130, 59, 0.803); */
 }
+html {
+  height: 100%; /*?ну вот так пока*/
+}
 body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  min-height: 100%;
 }
 :root {
   --main-black: #000;
   --main-lite-green: #5290c09e;
   --main-dark-green: #396092c4;
+
+  --alt-lite: #5b9aca;
+  --alt-dark: #476da0;
+
   --lite-color: #ebebeb;
   --text-black: #333;
 }
 /*  */
+.main {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 1) 75%,
+    rgba(232, 232, 232, 0.61) 75%
+  );
+  min-height: 100%;
+}
 .frame {
   padding: 0 10%;
-  padding-top: 300px;
+  padding-top: 5%;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
 }
 .card-zone {
   padding: 5% 3%;
-  max-width: 700px;
-  max-height: 400px;
-  width: 80%;
+  min-width: 600px;
+  min-height: 350px;
+  height: 100%;
+  max-width: 950px;
+  width: 75%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
 }
 .card {
   position: relative;
+  max-width: 80%;
 
   transition: transform 0.55s cubic-bezier(0, 1.65, 0.255, 1.035);
+  margin-bottom: 10%;
 }
 
 .card--open {
@@ -49,12 +82,14 @@ body {
   transition: transform 0.55s cubic-bezier(0, 1.65, 0.255, 1.035);
   backface-visibility: hidden;
   overflow: hidden;
+  border-radius: 15px;
+  border: 2px solid white;
 
   z-index: 1;
 }
 .active-background {
   padding: 30px 50px;
-  height: 100% !important;
+  height: 100%;
   width: 100%;
   border-radius: 15px;
 }
@@ -110,26 +145,28 @@ body {
   display: grid;
   grid-gap: 10px; /* Расстояние между элементами */
 }
-.card__system{
+.card__system {
   display: flex;
   justify-content: space-between;
-  
 }
-.system__main-part{
+.system__main-part {
   display: flex;
-  align-items:center;
+  align-items: center;
   align-content: center;
 }
-.systen__nfc{
+.systen__nfc {
   transform: scale(80%);
 }
-.logo{
+.logo {
   /* height: 100%; */
   width: 25%;
   overflow: hidden;
 }
-.logo-pic{
+.logo-pic {
   width: 100%;
+}
+.input {
+  padding: 8px;
 }
 .card__input {
   display: block;
@@ -146,17 +183,37 @@ body {
   letter-spacing: 2.5px;
   padding: 16px;
 }
+.CVV-input {
+  text-align: right;
+}
 
 .card__input[type="text"] {
   width: 100%;
 }
 
-@media screen and (min-width: 500px) {
+.input:focus {
+  box-shadow: inset 0 0 1px 3px var(--alt-dark);
+  border: 2px white solid;
+  outline: none;
+}
+
+@media screen and (min-width: 1000px) {
   .card form {
     grid-template-columns: 4fr 1fr; /* Две колонки */
     grid-template-rows: auto; /* Одна строка */
   }
-
+}
+@media screen and (min-width: 700px) {
+  .card form {
+    grid-template-columns: 3fr 2fr; /* Две колонки */
+    grid-template-rows: auto; /* Одна строка */
+  }
+}
+@media screen and (min-width: 500px) {
+  .card form {
+    grid-template-columns: 7fr 4fr; /* Две колонки */
+    grid-template-rows: auto; /* Одна строка */
+  }
   #card-number--box {
     grid-column: 1 / span 2; /* Занимает две колонки */
   }
@@ -181,13 +238,19 @@ body {
   z-index: 5;
   border-radius: 15px;
 }
+.back__input-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
 
 .back__magnetic-stripe {
-  margin: 0 -50px;
-  padding: 0 50px;
+  margin: 0 -55px;
+  padding: 0 55px;
   width: 200%;
   background-color: black;
-  height: 23%;
+  height: 20%;
+  margin-bottom: 3%;
 }
 
 @keyframes Logo {
@@ -208,7 +271,8 @@ body {
 .card__form {
   position: relative;
 }
-.front__error, .back__error {
+.front__error,
+.back__error {
   visibility: hidden;
   color: #ffffff;
   font-style: normal;
@@ -216,18 +280,88 @@ body {
   font-size: 12px;
   line-height: 14px;
 }
+.contact__error.error {
+  color: red;
+}
 .error {
   visibility: visible;
 }
 .error-input {
   border: 4px solid #ff5c00;
 }
-.bank-txt{
+.bank-txt {
   font-family: "Titillium Web", sans-serif;
   font-style: bold;
   font-size: 24px;
   font-weight: 600;
   letter-spacing: 2.5px;
   color: #ebebebfb;
+}
+.contact {
+  position: fixed;
+  bottom: 1%;
 
+  display: flex;
+  flex-direction: column;
+
+  /* border: 2px var(--main-lite-green) solid;
+  padding: 5% 10%;
+  border-radius: 15px; */
+}
+.contact > * {
+  transform: translateY(200%);
+  transition: transform 0.2s cubic-bezier(0.895, 0.03, 0.685, 0.22);
+}
+
+.contact:hover > *,
+.contact--active > * {
+  transform: translateY(-100%);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@media screen and (max-height: 720px) {
+  .contact--active > * {
+    transform: translateY(-55%) !important;
+  }
+}
+.contact--active > *,
+.contact--active:hover > * {
+  transform: translateY(-200%);
+}
+
+.contact__txt {
+  margin: 0;
+  padding: 0;
+  color: rgb(169, 169, 169);
+}
+.contact_email-block {
+  display: flex;
+  flex-direction: row;
+}
+.pay-button {
+  border-radius: 0 15px 15px 0;
+  border: 4px solid var(--main-lite-green);
+  cursor: pointer;
+  background-color: var(--main-lite-green);
+  color: white;
+  font-weight: 600px;
+  font-style: bold;
+}
+.pay-button:hover {
+  border: 4px solid var(--main-dark-green);
+  cursor: pointer;
+  background-color: var(--main-dark-green);
+}
+.pay-button:active {
+  border: 4px solid #f30bdf;
+  cursor: pointer;
+  background-color: #f30bdf;
+}
+.pay-button:disabled {
+  border-radius: 0 15px 15px 0;
+  border: 4px solid #ededed;
+  background-color: #ededed;
+  cursor:not-allowed;
+}
+.email-input {
+  border-radius: 15px 0 0 15px;
 }
